@@ -5,7 +5,9 @@ let (<|) f a = f a
 
 type model = {
   team: teamMember list;
-  simulation: story list;
+  stories: story list;
+  simulation: simulatedStory list;
+  config: storyConfig list;
 } 
 and
 teamMember = {
@@ -18,7 +20,22 @@ role =
 | QA
 | Accepter
 and
-story = phase list
+story = {
+  name: string;
+  duration: step list;
+}
+and
+step = {
+  activeDuration: int;
+  processStep: processStep;
+}
+and
+processStep =
+| Development
+| QA
+| Acceptance
+and
+simulatedStory = phase list
 and
 phase = {
   doneBy: teamMember list;
@@ -28,16 +45,18 @@ phase = {
 }
 and
 phaseType =
-| ReadyForDevelopment
-| InDevelopment
-| ReadyForQA
-| InQA
-| ReadyForAcceptance
-| Acceptance
+| Waiting of processStep
+| Doing of processStep
 | Done
+and
+storyConfig = {
+  processStep: processStep;
+  minDuration: int;
+  maxDuration: int;
+}
 
 type msg =
-  | NoOp
+  | GenerateRandomStory
   [@@bs.deriving {accessors}] 
 
 let thomas = {
@@ -54,43 +73,61 @@ let init () = {
   team = [
     thomas; paul; michel
   ];
+  stories = [];
+  config = [
+    {
+      processStep = Development;
+      minDuration = 2;
+      maxDuration = 10;
+    };
+    {
+      processStep = QA;
+      minDuration = 1;
+      maxDuration = 4;
+    };
+    {
+      processStep = Acceptance;
+      minDuration = 1;
+      maxDuration = 2;
+    }
+  ];
   simulation = [
     [ 
       {
         doneBy = [];
         startedOn = 1;
         endedOn = 5;
-        phaseType = ReadyForDevelopment;
+        phaseType = Waiting Development;
       };
       {
         doneBy = [thomas];
         startedOn = 5;
         endedOn = 10;
-        phaseType = InDevelopment;
+        phaseType = Doing Development;
       };
       {
         doneBy = [];
         startedOn = 10;
         endedOn = 15;
-        phaseType = ReadyForQA;
+        phaseType = Waiting QA;
       };
       {
         doneBy = [paul];
         startedOn = 15;
         endedOn = 18;
-        phaseType = InQA;
+        phaseType = Doing QA;
       };
       {
         doneBy = [];
         startedOn = 18;
         endedOn = 25;
-        phaseType = ReadyForAcceptance;
+        phaseType = Waiting Acceptance;
       };
       {
         doneBy = [michel];
         startedOn = 25;
         endedOn = 30;
-        phaseType = Acceptance;
+        phaseType = Doing Acceptance;
       };
       {
         doneBy = [];
@@ -102,17 +139,30 @@ let init () = {
   ]
 }
 
-let phaseTypeToColor = function
-  | ReadyForDevelopment -> "#DB2B39"
-  | InDevelopment -> "#EE9EA5"
-  | ReadyForQA -> "#29335C"
-  | InQA -> "#9DA2B4"
-  | ReadyForAcceptance -> "#F3A712"
-  | Acceptance -> "#F9D793"
-  | Done -> "#F8E8D3"
 
 let update model = function
-  | NoOp -> model
+  | GenerateRandomStory ->
+    let randBetween min max = (Random.int (max - min)) + min in
+    let randomStep config = 
+      {processStep = config.processStep; activeDuration = randBetween config.minDuration config.maxDuration}
+    in
+    let steps = List.map randomStep model.config in
+    let newStory = {
+      name = "RandomStory";
+      duration = steps;
+    }
+    in
+    Js.log newStory;
+    {model with stories = newStory :: model.stories}
+
+let phaseTypeToColor = function
+  | Waiting Development -> "#DB2B39"
+  | Doing Development -> "#EE9EA5"
+  | Waiting QA -> "#29335C"
+  | Doing QA -> "#9DA2B4"
+  | Waiting Acceptance -> "#F3A712"
+  | Doing Acceptance -> "#F9D793"
+  | Done -> "#F8E8D3"
 
 let viewStory story =
   let module Svg = Tea.Svg in
@@ -136,10 +186,19 @@ let viewStory story =
 let viewSimulation simulation =
   div [] (List.map viewStory simulation)
 
+let viewConfig model =
+  div []
+    [
+      button [onClick generateRandomStory] [text "Generate random story"];
+    ]
+
 let view model =
   div
     []
-    [ h1 [] [text "Simulation" ];
+    [
+      h1 [] [text "Config"];
+      viewConfig model;
+      h1 [] [text "Simulation" ];
       viewSimulation model.simulation
     ]
 
