@@ -117,19 +117,64 @@ let viewSimulation simulation =
   Svg.svg [SvgA.width "800"; SvgA.height "800"] (List.mapi viewSimulatedStory simulation)
 
 let viewConfig model =
+  let viewStory (story:story) =
+    let viewSteps steps =
+      let viewStep (step:step) = 
+        begin match step.processStep with
+        | Development -> "Development " ^ (string_of_int step.activeDuration) ^ ", "
+        | QA -> "QA " ^ (string_of_int step.activeDuration) ^ ", "
+        | Acceptance -> "Acceptance " ^ (string_of_int step.activeDuration) ^ ", "
+        end
+        |> text
+      in
+      span [] (List.map viewStep steps)
+    in
+    div [] [
+      h4 [] [text story.name];
+      viewSteps story.duration;
+    ]
+  in
+  let viewTeamMember (member:teamMember) =
+    let string_of_roles roles =
+      let string_of_role role =
+        match role with
+        | Developer -> "Developer"
+        | QA -> "QA"
+        | Accepter -> "Accepter"
+      in
+      List.fold_left (fun acc role -> (string_of_role role) ^ ", " ^ acc) "" roles
+    in
+    div [] [
+      span [] [text <| "Name: " ^ member.name];
+      span [] [text " | "];
+      span [] [text <| "Roles: " ^ (string_of_roles member.roles)]
+    ]
+  in
   div []
     [
-      button [onClick generateRandomStory] [text "Generate random story"];
-      button [onClick simulate] [text "Simulate Story"];
+      div [] [
+        h3 [] [text "Stories"];
+        p [] [text <| "There are " ^ (string_of_int <| List.length model.stories) ^ " stories"];
+        div [] (List.map viewStory model.stories);
+        button [onClick generateRandomStory] [text "Generate random story"];
+      ];
+      div [] [
+        h3 [] [text "Team members"];
+        p [] [text "These are the team members"];
+        div [] (List.map viewTeamMember model.team);
+      ];
     ]
 
 let view model =
   div
     []
     [
-      h1 [] [text "Config"];
+      h1 [] [text "Simulate flow"];
+      p [] [text "Generate some random stories and then simulate"];
+      h2 [] [text "Config"];
       viewConfig model;
-      h1 [] [text "Simulation" ];
+      h2 [] [text "Simulation" ];
+      button [onClick simulate] [text "Simulate Story"];
       viewSimulation model.simulatedStories
     ]
 
