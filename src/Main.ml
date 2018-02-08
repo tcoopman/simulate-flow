@@ -31,18 +31,18 @@ let init () = {
   config = [
     {
       processStep = Development;
-      minDuration = 4;
-      maxDuration = 5;
+      minDuration = 1;
+      maxDuration = 6;
     };
     {
       processStep = QA;
-      minDuration = 2;
-      maxDuration = 5;
+      minDuration = 1;
+      maxDuration = 6;
     };
     {
       processStep = Acceptance;
       minDuration = 1;
-      maxDuration = 2;
+      maxDuration = 6;
     }
   ];
   simulatedStories = []
