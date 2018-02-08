@@ -92,7 +92,7 @@ let phaseTypeToColor = function
 let viewSimulatedStory index story =
   let module Svg = Tea.Svg in
   let module SvgA = Tea.Svg.Attributes in
-  let scale = 20 in
+  let scale = 40 in
   let viewPhase phase =
     let x = (phase.startedOn - 1) * scale |> string_of_int in
     let width = (phase.endedOn - phase.startedOn + 1) * scale |> string_of_int in
@@ -102,19 +102,48 @@ let viewSimulatedStory index story =
       |> List.fold_left (^) ""
     in
     Svg.g [] [
-      Svg.rect [SvgA.x x; SvgA.y "0"; SvgA.width width; SvgA.height "40"; SvgA.fill <| phaseTypeToColor phase.phaseType] [];
-      Svg.text' [SvgA.x x; SvgA.y "20"; SvgA.width width; SvgA.height "40"; SvgA.fill "black"; SvgA.fontSize "20"] [Svg.text names];
+      Svg.rect [SvgA.x x; SvgA.y "0"; SvgA.width width; SvgA.height (string_of_int scale); SvgA.fill <| phaseTypeToColor phase.phaseType] [];
+      Svg.text' [SvgA.x x; SvgA.y "20"; SvgA.width width; SvgA.height (string_of_int scale); SvgA.fill "black"; SvgA.fontSize "20"] [Svg.text names];
     ]
   in
   let transform =
     "translate(0," ^ string_of_int (index * scale * 2) ^ ")"
   in
-  Svg.g [SvgA.transform transform] (List.map viewPhase story.steps)
+  let viewGridForStory =
+    let totalLength = List.fold_left (fun max story -> if story.endedOn > max then story.endedOn else max) 0 story.steps in
+    let rec grid current end_ rects =
+      let rect i =
+        Svg.rect [
+          SvgA.x (string_of_int <| i * scale);
+          SvgA.y "0";
+          SvgA.width (string_of_int scale);
+          SvgA.height (string_of_int scale);
+          SvgA.fillOpacity "0";
+          SvgA.stroke "black";
+        ] []
+      in
+      if current >= end_ then 
+        rects
+      else
+        grid (current + 1) end_ ((rect current) :: rects)
+    in
+    Svg.g [] (grid 0 totalLength [])
+  in
+  Svg.g [SvgA.transform transform] [
+    Svg.g [] (List.map viewPhase story.steps);
+    viewGridForStory
+  ]
 
 let viewSimulation simulation =
   let module Svg = Tea.Svg in
   let module SvgA = Tea.Svg.Attributes in
-  Svg.svg [SvgA.width "800"; SvgA.height "800"] (List.mapi viewSimulatedStory simulation)
+  div [] [
+      h2 [] [text "Simulation" ];
+      button [onClick simulate] [text "Simulate Story"];
+      div [] [
+        Svg.svg [SvgA.width "800"; SvgA.height "800"] (List.mapi viewSimulatedStory simulation)
+      ]
+  ]
 
 let viewConfig model =
   let viewStory (story:story) =
@@ -154,9 +183,9 @@ let viewConfig model =
     [
       div [] [
         h3 [] [text "Stories"];
+        button [onClick generateRandomStory] [text "Generate random story"];
         p [] [text <| "There are " ^ (string_of_int <| List.length model.stories) ^ " stories"];
         div [] (List.map viewStory model.stories);
-        button [onClick generateRandomStory] [text "Generate random story"];
       ];
       div [] [
         h3 [] [text "Team members"];
@@ -173,8 +202,6 @@ let view model =
       p [] [text "Generate some random stories and then simulate"];
       h2 [] [text "Config"];
       viewConfig model;
-      h2 [] [text "Simulation" ];
-      button [onClick simulate] [text "Simulate Story"];
       viewSimulation model.simulatedStories
     ]
 

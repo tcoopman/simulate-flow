@@ -51,6 +51,7 @@ and doneStep = {
     startDate: int;
     endDate: int;
     processStep: processStep;
+    peopleWorkedOnIt: teamMember list;
 }
 
 
@@ -66,6 +67,7 @@ let firstWorkOnActiveStories day availablePeople stories =
                     startDate = step.startDate;
                     endDate = endDate;
                     processStep = step.processStep;
+                    peopleWorkedOnIt = step.peopleWorkingOnIt;
                 } in
                 let workingStory = {story with activeStep = None; doneSteps = doneStep :: story.doneSteps} in
                 (* Js.log "done on!";
@@ -124,7 +126,7 @@ let rec simulate' config stories done_ =
     let doneToOutput () = 
         List.map (fun story -> 
             let steps = List.map (fun (step:doneStep) -> {
-                doneBy = [];
+                doneBy = step.peopleWorkedOnIt;
                 startedOn = step.startDate;
                 endedOn = step.endDate;
                 phaseType = processStepToPhaseStep step.processStep
