@@ -1,7 +1,9 @@
 # Simulate flow
 
+Simulates flow in your project.
+This is a WIP (pun intended!)
 
-# Getting started
+# Getting started with npm
 
 ## Install
 
@@ -20,3 +22,11 @@ npm run build
 ```
 npm run watch
 ```
+
+# Getting started with docker
+
+```
+docker-compose up
+```
+
+Go to http://localhost:8000
