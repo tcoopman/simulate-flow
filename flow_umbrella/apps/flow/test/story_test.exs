@@ -4,18 +4,14 @@ defmodule FlowTests.Story do
   import Flow.Factory
 
   alias Flow.Router
+  alias Flow.Gwt
   alias Flow.Story.Events.{StoryCreated}
 
-  describe "FooBar" do
+  describe "Story" do
     test "When nothing is started" do
-      command = build(:create_story)
-
-      IO.inspect(command)
-      :ok = Router.dispatch(command)
-
-      assert_receive_event(StoryCreated, fn event ->
-        assert true
-      end)
+      Gwt.given(Flow.Story, [])
+      |> Gwt.when_(build(:create_story))
+      |> Gwt.then_([build(:story_created)])
     end
   end
 end
