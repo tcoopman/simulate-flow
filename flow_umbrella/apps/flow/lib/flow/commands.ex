@@ -11,7 +11,7 @@ defmodule Flow.Story.Commands do
   defmodule PickUpStory do
     defstruct [
       :storyId,
-      :name,
+      :by,
       :work
     ]
   end

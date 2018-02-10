@@ -37,12 +37,12 @@ defmodule Flow.Story do
 
   def execute(%Story{}, %PickUpStory{
         storyId: storyId,
-        name: name,
+        by: by,
         work: work
       }) do
     %StoryPickedUp{
       storyId: storyId,
-      name: name,
+      by: by,
       work: work
     }
   end

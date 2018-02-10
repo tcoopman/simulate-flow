@@ -11,7 +11,7 @@ defmodule Flow.Story.Events do
   defmodule StoryPickedUp do
     defstruct [
       :storyId,
-      :name,
+      :by,
       :work
     ]
   end

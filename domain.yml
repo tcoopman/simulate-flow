@@ -10,7 +10,7 @@ Story:
     - PickUpStory:  
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-          name: string
+          by: Thomas
           work:
         happyPath: StoryPickedUp
     - WorkOnStory:
@@ -30,7 +30,7 @@ Story:
     - StoryPickedUp:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-          name: string
+          by: Thomas
           work:
     - WorkedOnStory:
         attributes:
