@@ -18,12 +18,12 @@
 *.annot
 *.cmj
 *.bak
-lib/
 *.mlast
 *.mliast
 .vscode
 node_modules
 release/main.js
+lib/bs
 .merlin
 yarn.lock
 package-lock.json
