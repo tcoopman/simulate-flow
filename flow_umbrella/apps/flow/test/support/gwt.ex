@@ -30,6 +30,8 @@ defmodule Flow.Gwt do
     end)
   end
 
+  def then_(%Gwt{} = gwt, event), do: then_(gwt, [event])
+
   def then_command_fails(%Gwt{} = gwt, failure) do
     gwt = apply_events(gwt)
 

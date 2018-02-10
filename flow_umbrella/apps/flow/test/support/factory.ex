@@ -28,14 +28,14 @@ defmodule Flow.Factory do
   def pick_up_story_factory do
     %PickUpStory{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      by: "Thomas",
-      work: "null"
+      by: "Thomas"
     }
   end
 
   def work_on_story_factory do
     %WorkOnStory{
-      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907"
+      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
+      by: "Thomas"
     }
   end
 
@@ -56,16 +56,14 @@ defmodule Flow.Factory do
   def story_picked_up_factory do
     %StoryPickedUp{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      by: "Thomas",
-      work: "null"
+      by: "Thomas"
     }
   end
 
   def worked_on_story_factory do
     %WorkedOnStory{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
-      work: "null"
+      by: "Thomas"
     }
   end
 

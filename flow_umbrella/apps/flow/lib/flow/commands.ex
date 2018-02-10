@@ -11,14 +11,14 @@ defmodule Flow.Story.Commands do
   defmodule PickUpStory do
     defstruct [
       :storyId,
-      :by,
-      :work
+      :by
     ]
   end
 
   defmodule WorkOnStory do
     defstruct [
-      :storyId
+      :storyId,
+      :by
     ]
   end
 

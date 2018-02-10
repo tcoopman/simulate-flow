@@ -26,6 +26,23 @@ defmodule FlowTests.Story do
       |> Gwt.then_command_fails(:story_does_not_exist)
     end
 
+    test "Cannot work on anything that you have not picked up" do
+      Gwt.given(%Story{}, [
+        build(:story_created)
+      ])
+      |> Gwt.when_(build(:work_on_story))
+      |> Gwt.then_command_fails(:story_not_picked_up)
+    end
+
+    test "You can work on a story that you have picked up" do
+      Gwt.given(%Story{}, [
+        build(:story_created),
+        build(:story_picked_up)
+      ])
+      |> Gwt.when_(build(:work_on_story))
+      |> Gwt.then_(build(:worked_on_story))
+    end
+
     test "A happy flow path story finished" do
       Gwt.given(%Story{}, [
         build(:story_created)

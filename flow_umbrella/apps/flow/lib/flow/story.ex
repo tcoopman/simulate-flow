@@ -1,6 +1,6 @@
 # Generated code
 defmodule Flow.Story do
-  defstruct [:storyId]
+  defstruct [:storyId, :picked_up_by]
 
   alias __MODULE__
 
@@ -38,12 +38,10 @@ defmodule Flow.Story do
   def execute(%Story{}, %PickUpStory{
         storyId: storyId,
         by: by,
-        work: work
       }) do
     %StoryPickedUp{
       storyId: storyId,
       by: by,
-      work: work
     }
   end
 
@@ -51,11 +49,17 @@ defmodule Flow.Story do
     {:error, :story_does_not_exist}
   end
 
+  def execute(%Story{picked_up_by: nil}, %WorkOnStory{}) do
+    {:error, :story_not_picked_up}
+  end
+
   def execute(%Story{}, %WorkOnStory{
-        storyId: storyId
+        storyId: storyId,
+        by: by
       }) do
     %WorkedOnStory{
-      storyId: storyId
+      storyId: storyId,
+      by: by
     }
   end
 
@@ -75,8 +79,8 @@ defmodule Flow.Story do
     %{story | storyId: storyId}
   end
 
-  def apply(%Story{} = story, %StoryPickedUp{}) do
-    story
+  def apply(%Story{} = story, %StoryPickedUp{by: by}) do
+    %{story | picked_up_by: by}
   end
 
   def apply(%Story{} = story, %WorkedOnStory{}) do

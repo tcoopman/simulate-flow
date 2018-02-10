@@ -11,11 +11,11 @@ Story:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
           by: Thomas
-          work:
         happyPath: StoryPickedUp
     - WorkOnStory:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          by: Thomas
         happyPath: WorkedOnStory
     - FinishStory:
         attributes:
@@ -31,12 +31,10 @@ Story:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
           by: Thomas
-          work:
     - WorkedOnStory:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-          name: string
-          work:
+          by: Thomas
     - ProcessStepForStoryFinished:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
