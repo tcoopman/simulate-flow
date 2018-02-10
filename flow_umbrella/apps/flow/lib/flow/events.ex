@@ -1,6 +1,6 @@
 # Generated code
-defmodule Flow.Board.Events do
-  defmodule StoryCreated do
+defmodule Flow.Story.Events do
+  defmodule CreateStory do
     defstruct [
       :storyId,
       :name,
@@ -8,7 +8,7 @@ defmodule Flow.Board.Events do
     ]
   end
 
-  defmodule StoryPickedUp do
+  defmodule PickUpStory do
     defstruct [
       :storyId,
       :name,
@@ -16,27 +16,15 @@ defmodule Flow.Board.Events do
     ]
   end
 
-  defmodule WorkedOnStory do
+  defmodule WorkOnStory do
     defstruct [
-      :storyId,
-      :name,
-      :work
+      :storyId
     ]
   end
 
-  defmodule ProcessStepForStoryFinished do
+  defmodule FinishStory do
     defstruct [
-      :storyId,
-      :name,
-      :work
-    ]
-  end
-
-  defmodule StoryFinished do
-    defstruct [
-      :storyId,
-      :name,
-      :work
+      :storyId
     ]
   end
 end

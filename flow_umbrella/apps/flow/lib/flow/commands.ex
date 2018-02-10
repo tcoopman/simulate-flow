@@ -1,5 +1,5 @@
 # Generated code
-defmodule Flow.Board.Commands do
+defmodule Flow.Story.Commands do
   defmodule CreateStory do
     defstruct [
       :storyId,

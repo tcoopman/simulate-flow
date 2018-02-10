@@ -2,22 +2,26 @@
 defmodule Flow.Router do
   use Commanded.Commands.Router
 
-  alias Flow.{
-    Board
-  }
+  alias Flow.Story
 
-  alias Flow.Board.Commands.{
+  alias Flow.Story.Commands.{
     CreateStory,
     PickUpStory,
     WorkOnStory,
     FinishStory
   }
 
-  dispatch(CreateStory, to: Board, identity: :storyId)
+  identify(
+    Story,
+    by: :storyId,
+    prefix: "story_"
+  )
 
-  dispatch(PickUpStory, to: Board, identity: :storyId)
+  dispatch(CreateStory, to: Story)
 
-  dispatch(WorkOnStory, to: Board, identity: :storyId)
+  dispatch(PickUpStory, to: Story)
 
-  dispatch(FinishStory, to: Board, identity: :storyId)
+  dispatch(WorkOnStory, to: Story)
+
+  dispatch(FinishStory, to: Story)
 end

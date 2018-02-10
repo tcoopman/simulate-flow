@@ -1,61 +1,45 @@
-Flow.Board.Commands:
-  - CreateStory:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
-  - PickUpStory:  
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
-  - WorkOnStory:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-      aggregate: Board
-      identity: storyId
-  - FinishStory:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-      aggregate: Board
-      identity: storyId
-Flow.Board.Events:
-  - StoryCreated:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
-  - StoryPickedUp:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
-  - WorkedOnStory:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
-  - ProcessStepForStoryFinished:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
-  - StoryFinished:
-      attributes:
-        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-        name: string
-        work:
-      aggregate: Board
-      identity: storyId
+Story:
+  identity: storyId
+  Commands:
+    - CreateStory:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:
+    - PickUpStory:  
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:
+    - WorkOnStory:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+    - FinishStory:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+  Events:
+    - StoryCreated:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:
+    - StoryPickedUp:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:
+    - WorkedOnStory:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:
+    - ProcessStepForStoryFinished:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:
+    - StoryFinished:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          name: string
+          work:

@@ -1,5 +1,5 @@
 # Generated code
-defmodule Flow.Board do
+defmodule Flow.Story do
   defstruct []
 
   def execute(_, _) do

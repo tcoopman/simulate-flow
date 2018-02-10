@@ -3,29 +3,64 @@ defmodule Mix.Tasks.Flow.GenerateDomain do
 
   alias __MODULE__
 
-  @base_path "./apps/flow/lib/flow"
-  @base_test_path "./apps/flow/test"
-
   def run(_) do
     :ok = Application.start(:yamerl)
     domain = :yamerl_constr.file("../domain.yml")
-    parse(domain)
+    parse("Flow", domain)
   end
 
-  def parse([[{commands_module, commands}, {events_module, events}]]) do
-    commands = Enum.map(commands, &parse_message/1)
-    events = Enum.map(events, &parse_message/1)
+  def parse(module, [[{aggregate, messages}]]) do
+    {'identity', identity} = hd(messages)
+    aggregate = to_string(aggregate)
 
-    generate_messages("commands", commands_module, commands)
-    generate_messages("events", events_module, events)
-    generate_router(commands_module, commands)
-    generate_aggregate("board", commands_module, commands, events_module, events)
-    generate_factories(commands_module, commands, events_module, events)
+    {commands, events} = map_messages(tl(messages))
+
+    commands_module = module <> "." <> aggregate <> ".Commands"
+    events_module = module <> "." <> aggregate <> ".Events"
+
+    commands_template = generate_messages(commands_module, commands)
+    events_template = generate_messages(events_module, commands)
+    router_template = generate_router(module, aggregate, identity, commands_module, commands)
+    aggregate_template = generate_aggregate(module, aggregate)
+    factories_template = generate_factories(commands_module, commands, events_module, events)
+
+    commands_path = base_folder(module) <> "/commands.ex"
+    events_path = base_folder(module) <> "/events.ex"
+    router_path = base_folder(module) <> "/router.ex"
+    aggregate_path = base_folder(module) <> "/" <> Macro.underscore(aggregate) <> ".ex"
+    factories_path = base_test_folder(module) <> "/support/factory.ex"
+
+    :ok = File.write(commands_path, commands_template)
+    :ok = File.write(events_path, events_template)
+    :ok = File.write(router_path, router_template)
+    :ok = File.write(aggregate_path, aggregate_template)
+    :ok = File.write(factories_path, factories_template)
+
     :ok = Mix.Tasks.Format.run([])
   end
 
+  defp base_folder(module) do
+    module = Macro.underscore(module)
+    folder = "./apps/" <> module <> "/lib/" <> module
+    :ok = File.mkdir_p(folder)
+    folder
+  end
+
+  defp base_test_folder(module) do
+    module = Macro.underscore(module)
+    folder = "./apps/" <> module <> "/test"
+    :ok = File.mkdir_p(folder)
+    folder
+  end
+
+  defp map_messages([{'Commands', commands}, {'Events', events}]) do
+    commands = Enum.map(commands, &parse_message/1)
+    events = Enum.map(events, &parse_message/1)
+    {commands, events}
+  end
+
   defp parse_message([
-         {name, [{'attributes', attributes}, {'aggregate', aggregate}, {'identity', identity}]}
+         {name, [{'attributes', attributes}]}
        ])
        when is_list(attributes) do
     attributes = Enum.map(attributes, &parse_attributes/1)
@@ -33,9 +68,7 @@ defmodule Mix.Tasks.Flow.GenerateDomain do
     %{
       name: name,
       underscore_name: to_underscore(name),
-      attributes: attributes,
-      aggregate: aggregate,
-      identity: identity
+      attributes: attributes
     }
   end
 
@@ -45,9 +78,7 @@ defmodule Mix.Tasks.Flow.GenerateDomain do
       example: example
     }
 
-  defp generate_messages(type, module, messages) do
-    path = @base_path <> "/" <> type <> ".ex"
-
+  defp generate_messages(module, messages) do
     template = """
     # Generated code
     defmodule <%= @module %> do
@@ -63,56 +94,45 @@ defmodule Mix.Tasks.Flow.GenerateDomain do
     end
     """
 
-    output = EEx.eval_string(template, assigns: [module: module, messages: messages])
-    :ok = File.write(path, output)
+    EEx.eval_string(template, assigns: [module: module, messages: messages])
   end
 
-  defp generate_router(commands_module, commands) do
-    path = @base_path <> "/router.ex"
-
+  defp generate_router(module, aggregate, identity, commands_module, commands) do
     template = """
     # Generated code
-    defmodule Flow.Router do
+    defmodule <%= @module %>.Router do
         use Commanded.Commands.Router
 
-        alias Flow.{
-            <%= for aggregate <- @aggregates do %>
-                <%= aggregate %>
-            <% end %>
-        }
+        alias <%= @module %>.<%= @aggregate %>
         <%= @command_aliasses %>
 
+        identify <%= @aggregate %>,
+          by: :<%= @identity %>,
+          prefix: "<%= Macro.underscore(@aggregate) %>_"
+
         <%= for command <- @commands do %>
-            dispatch <%= command.name %>, to: <%= command.aggregate %>, identity: :<%= command.identity %>
+            dispatch <%= command.name %>, to: <%= @aggregate %>
         <% end %>
     end
     """
-
-    aggregates =
-      Enum.map(commands, fn command ->
-        command.aggregate
-      end)
-      |> Enum.dedup()
 
     output =
       EEx.eval_string(
         template,
         assigns: [
+          module: module,
+          identity: identity,
           commands: commands,
-          aggregates: aggregates,
+          aggregate: aggregate,
           command_aliasses: generate_aliasses(commands_module, commands)
         ]
       )
-
-    :ok = File.write(path, output)
   end
 
-  defp generate_aggregate(aggregate, commands_module, commands, events_module, events) do
-    path = @base_path <> "/" <> aggregate <> ".ex"
-
+  defp generate_aggregate(module, aggregate) do
     template = """
     # Generated code
-    defmodule Flow.<%= @aggregate %> do
+    defmodule <%= @module %>.<%= @aggregate %> do
       defstruct []
 
       def execute(_, _) do
@@ -120,22 +140,16 @@ defmodule Mix.Tasks.Flow.GenerateDomain do
     end
     """
 
-    output =
-      EEx.eval_string(
-        template,
-        assigns: [
-          aggregate: Macro.camelize(aggregate)
-        ]
-      )
-
-    :ok = File.write(path, output)
+    EEx.eval_string(
+      template,
+      assigns: [
+        module: module,
+        aggregate: aggregate
+      ]
+    )
   end
 
   defp generate_factories(commands_module, commands, events_module, events) do
-    folder = @base_test_path <> "/support/"
-    :ok = File.mkdir_p(folder)
-    path = folder <> "factory.ex"
-
     template = """
     # Generated code
     defmodule Flow.Factory do
@@ -149,18 +163,15 @@ defmodule Mix.Tasks.Flow.GenerateDomain do
     end
     """
 
-    output =
-      EEx.eval_string(
-        template,
-        assigns: [
-          commands: generate_message_factories(commands),
-          events: generate_message_factories(events),
-          commands_aliasses: generate_aliasses(commands_module, commands),
-          events_aliasses: generate_aliasses(events_module, events)
-        ]
-      )
-
-    :ok = File.write(path, output)
+    EEx.eval_string(
+      template,
+      assigns: [
+        commands: generate_message_factories(commands),
+        events: generate_message_factories(events),
+        commands_aliasses: generate_aliasses(commands_module, commands),
+        events_aliasses: generate_aliasses(events_module, events)
+      ]
+    )
   end
 
   defp to_underscore(name) when is_list(name) do

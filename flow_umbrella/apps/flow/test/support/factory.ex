@@ -2,14 +2,14 @@
 defmodule Flow.Factory do
   use ExMachina
 
-  alias Flow.Board.Commands.{
+  alias Flow.Story.Commands.{
     CreateStory,
     PickUpStory,
     WorkOnStory,
     FinishStory
   }
 
-  alias Flow.Board.Events.{
+  alias Flow.Story.Events.{
     StoryCreated,
     StoryPickedUp,
     WorkedOnStory,
