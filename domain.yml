@@ -6,17 +6,21 @@ Story:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
           name: string
           work:
+        happyPath: StoryCreated
     - PickUpStory:  
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
           name: string
           work:
+        happyPath: StoryPickedUp
     - WorkOnStory:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+        happyPath: WorkedOnStory
     - FinishStory:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+        happyPath: StoryFinished
   Events:
     - StoryCreated:
         attributes:
