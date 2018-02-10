@@ -4,7 +4,7 @@ Story:
     - CreateStory:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-          name: string
+          name: Work on flow simulator
           work:
         happyPath: StoryCreated
     - PickUpStory:  
@@ -25,7 +25,7 @@ Story:
     - StoryCreated:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-          name: string
+          name: Work on flow simulator
           work:
     - StoryPickedUp:
         attributes:

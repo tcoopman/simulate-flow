@@ -20,7 +20,7 @@ defmodule Flow.Factory do
   def create_story_factory do
     %CreateStory{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
+      name: "Work on flow simulator",
       work: "null"
     }
   end
@@ -48,7 +48,7 @@ defmodule Flow.Factory do
   def story_created_factory do
     %StoryCreated{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
+      name: "Work on flow simulator",
       work: "null"
     }
   end
