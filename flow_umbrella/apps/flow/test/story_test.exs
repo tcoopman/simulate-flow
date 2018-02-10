@@ -22,6 +22,10 @@ defmodule FlowTests.Story do
       |> Gwt.then_command_fails(:story_does_not_exist)
 
       Gwt.given(%Story{}, [])
+      |> Gwt.when_(build(:finish_process_step))
+      |> Gwt.then_command_fails(:story_does_not_exist)
+
+      Gwt.given(%Story{}, [])
       |> Gwt.when_(build(:finish_story))
       |> Gwt.then_command_fails(:story_does_not_exist)
     end

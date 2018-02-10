@@ -8,6 +8,7 @@ defmodule Flow.Router do
     CreateStory,
     PickUpStory,
     WorkOnStory,
+    FinishProcessStep,
     FinishStory
   }
 
@@ -22,6 +23,8 @@ defmodule Flow.Router do
   dispatch(PickUpStory, to: Story)
 
   dispatch(WorkOnStory, to: Story)
+
+  dispatch(FinishProcessStep, to: Story)
 
   dispatch(FinishStory, to: Story)
 end

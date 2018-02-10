@@ -22,6 +22,14 @@ defmodule Flow.Story.Commands do
     ]
   end
 
+  defmodule FinishProcessStep do
+    defstruct [
+      :storyId,
+      :by,
+      :step
+    ]
+  end
+
   defmodule FinishStory do
     defstruct [
       :storyId

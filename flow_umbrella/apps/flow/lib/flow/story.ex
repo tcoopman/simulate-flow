@@ -8,6 +8,7 @@ defmodule Flow.Story do
     CreateStory,
     PickUpStory,
     WorkOnStory,
+    FinishProcessStep,
     FinishStory
   }
 
@@ -37,11 +38,11 @@ defmodule Flow.Story do
 
   def execute(%Story{}, %PickUpStory{
         storyId: storyId,
-        by: by,
+        by: by
       }) do
     %StoryPickedUp{
       storyId: storyId,
-      by: by,
+      by: by
     }
   end
 
@@ -60,6 +61,22 @@ defmodule Flow.Story do
     %WorkedOnStory{
       storyId: storyId,
       by: by
+    }
+  end
+
+  def execute(%Story{storyId: nil}, %FinishProcessStep{}) do
+    {:error, :story_does_not_exist}
+  end
+
+  def execute(%Story{}, %FinishProcessStep{
+        storyId: storyId,
+        by: by,
+        step: step
+      }) do
+    %ProcessStepForStoryFinished{
+      storyId: storyId,
+      by: by,
+      step: step
     }
   end
 

@@ -6,6 +6,7 @@ defmodule Flow.Factory do
     CreateStory,
     PickUpStory,
     WorkOnStory,
+    FinishProcessStep,
     FinishStory
   }
 
@@ -36,6 +37,14 @@ defmodule Flow.Factory do
     %WorkOnStory{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
       by: "Thomas"
+    }
+  end
+
+  def finish_process_step_factory do
+    %FinishProcessStep{
+      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
+      by: "Thomas",
+      step: "dev"
     }
   end
 
@@ -70,8 +79,8 @@ defmodule Flow.Factory do
   def process_step_for_story_finished_factory do
     %ProcessStepForStoryFinished{
       storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
-      work: "null"
+      by: "Thomas",
+      step: "dev"
     }
   end
 

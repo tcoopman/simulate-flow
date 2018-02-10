@@ -25,8 +25,8 @@ defmodule Flow.Story.Events do
   defmodule ProcessStepForStoryFinished do
     defstruct [
       :storyId,
-      :name,
-      :work
+      :by,
+      :step
     ]
   end
 

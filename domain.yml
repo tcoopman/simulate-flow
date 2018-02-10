@@ -17,6 +17,12 @@ Story:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
           by: Thomas
         happyPath: WorkedOnStory
+    - FinishProcessStep:
+        attributes:
+          storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+          by: Thomas
+          step: dev
+        happyPath: ProcessStepForStoryFinished
     - FinishStory:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
@@ -38,8 +44,8 @@ Story:
     - ProcessStepForStoryFinished:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
-          name: string
-          work:
+          by: Thomas
+          step: dev
     - StoryFinished:
         attributes:
           storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
