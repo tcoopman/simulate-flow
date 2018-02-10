@@ -18,58 +18,38 @@ defmodule Flow.Factory do
   }
 
   def create_story_factory do
-    %CreateStory{
-      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
-      work: "null"
-    }
+    %CreateStory{}
   end
 
   def pick_up_story_factory do
-    %PickUpStory{
-      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
-      work: "null"
-    }
+    %PickUpStory{}
   end
 
   def work_on_story_factory do
-    %WorkOnStory{
-      storyId: "string"
-    }
+    %WorkOnStory{}
   end
 
   def finish_story_factory do
-    %FinishStory{
-      storyId: "string"
-    }
+    %FinishStory{}
   end
 
-  def create_story_factory do
-    %CreateStory{
-      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
-      work: "null"
-    }
+  def story_created_factory do
+    %StoryCreated{}
   end
 
-  def pick_up_story_factory do
-    %PickUpStory{
-      storyId: "d7b86407-bad3-4eac-b1d1-0209d5276907",
-      name: "string",
-      work: "null"
-    }
+  def story_picked_up_factory do
+    %StoryPickedUp{}
   end
 
-  def work_on_story_factory do
-    %WorkOnStory{
-      storyId: "string"
-    }
+  def worked_on_story_factory do
+    %WorkedOnStory{}
   end
 
-  def finish_story_factory do
-    %FinishStory{
-      storyId: "string"
-    }
+  def process_step_for_story_finished_factory do
+    %ProcessStepForStoryFinished{}
+  end
+
+  def story_finished_factory do
+    %StoryFinished{}
   end
 end

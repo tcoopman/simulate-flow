@@ -35,7 +35,7 @@ defmodule Flow.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:yamerl, "~> 0.4.0"}]
+    [{:yamerl, "~> 0.4.0"}, {:ex_machina, "~> 2.1", only: :test}, {:commanded, "~> 0.15"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

@@ -5,48 +5,57 @@ Flow.Board.Commands:
         name: string
         work:
       aggregate: Board
+      identity: storyId
   - PickUpStory:  
       attributes:
         storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
         name: string
         work:
       aggregate: Board
+      identity: storyId
   - WorkOnStory:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
       aggregate: Board
+      identity: storyId
   - FinishStory:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
       aggregate: Board
+      identity: storyId
 Flow.Board.Events:
   - StoryCreated:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
         name: string
         work:
       aggregate: Board
+      identity: storyId
   - StoryPickedUp:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
         name: string
         work:
       aggregate: Board
+      identity: storyId
   - WorkedOnStory:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
         name: string
         work:
       aggregate: Board
+      identity: storyId
   - ProcessStepForStoryFinished:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
         name: string
         work:
       aggregate: Board
+      identity: storyId
   - StoryFinished:
       attributes:
-        storyId: string
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
         name: string
         work:
       aggregate: Board
+      identity: storyId

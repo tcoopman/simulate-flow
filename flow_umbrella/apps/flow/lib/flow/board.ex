@@ -1,20 +1,7 @@
+# Generated code
 defmodule Flow.Board do
-  # defmodule Commands do
-  #     defmodule CreateStory do
-  #     end
-  #     defmodule PickUpStory do
-  #         defstruct []
-  #     end
-  #     defmodule WorkOnStory do
-  #         defstruct []
-  #     end
-  #     defmodule FinishStory do
-  #         defstruct []
-  #     end
-  # end
+  defstruct []
 
-  # defmodule Events do
-  #     defmodule StoryCreated do
-  #     end
-  # end
+  def execute(_, _) do
+  end
 end
