@@ -12,7 +12,6 @@ defmodule Flow.StorageCase do
     reset_storage()
 
     {:ok, _} = Application.ensure_all_started(:commanded)
-    # IO.inspect "start motivate me web"
     {:ok, _} = Application.ensure_all_started(:flow)
     {:ok, _} = Application.ensure_all_started(:flow_web)
     :ok

@@ -31,7 +31,7 @@ defmodule Flow.Story do
     }
   end
 
-  def execute(%Story{storyId: nil} = story, %PickUpStory{}) do
+  def execute(%Story{storyId: nil}, %PickUpStory{}) do
     {:error, :story_does_not_exist}
   end
 
@@ -47,12 +47,20 @@ defmodule Flow.Story do
     }
   end
 
+  def execute(%Story{storyId: nil}, %WorkOnStory{}) do
+    {:error, :story_does_not_exist}
+  end
+
   def execute(%Story{}, %WorkOnStory{
         storyId: storyId
       }) do
     %WorkedOnStory{
       storyId: storyId
     }
+  end
+
+  def execute(%Story{storyId: nil}, %FinishStory{}) do
+    {:error, :story_does_not_exist}
   end
 
   def execute(%Story{}, %FinishStory{
@@ -64,10 +72,7 @@ defmodule Flow.Story do
   end
 
   def apply(%Story{} = story, %StoryCreated{storyId: storyId}) do
-    IO.inspect("applied")
-
     %{story | storyId: storyId}
-    |> IO.inspect()
   end
 
   def apply(%Story{} = story, %StoryPickedUp{}) do

@@ -1,12 +1,9 @@
 defmodule FlowTests.Story do
   use Flow.StorageCase
-  import Commanded.Assertions.EventAssertions
   import Flow.Factory
 
-  alias Flow.Router
   alias Flow.Gwt
   alias Flow.Story
-  alias Flow.Story.Events.{StoryCreated}
 
   describe "Story" do
     test "When nothing is started" do
@@ -18,6 +15,14 @@ defmodule FlowTests.Story do
     test "Cannot do anything on an unstarted story" do
       Gwt.given(%Story{}, [])
       |> Gwt.when_(build(:pick_up_story))
+      |> Gwt.then_command_fails(:story_does_not_exist)
+
+      Gwt.given(%Story{}, [])
+      |> Gwt.when_(build(:work_on_story))
+      |> Gwt.then_command_fails(:story_does_not_exist)
+
+      Gwt.given(%Story{}, [])
+      |> Gwt.when_(build(:finish_story))
       |> Gwt.then_command_fails(:story_does_not_exist)
     end
 
