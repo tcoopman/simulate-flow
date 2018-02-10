@@ -1,25 +1,52 @@
 Flow.Board.Commands:
   - CreateStory:
-      storyId: string
-      name: string
-      work:
+      attributes:
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+        name: string
+        work:
+      aggregate: Board
   - PickUpStory:  
-      storyId: string
+      attributes:
+        storyId: d7b86407-bad3-4eac-b1d1-0209d5276907
+        name: string
+        work:
+      aggregate: Board
   - WorkOnStory:
-      storyId: string
+      attributes:
+        storyId: string
+      aggregate: Board
   - FinishStory:
-      storyId: string
+      attributes:
+        storyId: string
+      aggregate: Board
 Flow.Board.Events:
   - StoryCreated:
-      storyId: string
-      name: string
-      work:
+      attributes:
+        storyId: string
+        name: string
+        work:
+      aggregate: Board
   - StoryPickedUp:
-      storyId: string
+      attributes:
+        storyId: string
+        name: string
+        work:
+      aggregate: Board
   - WorkedOnStory:
-      storyId: string
+      attributes:
+        storyId: string
+        name: string
+        work:
+      aggregate: Board
   - ProcessStepForStoryFinished:
-      storyId: string
-      processStepId: string
+      attributes:
+        storyId: string
+        name: string
+        work:
+      aggregate: Board
   - StoryFinished:
-      storyId: string
+      attributes:
+        storyId: string
+        name: string
+        work:
+      aggregate: Board

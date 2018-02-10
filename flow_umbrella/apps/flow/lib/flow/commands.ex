@@ -15,10 +15,14 @@ defmodule Flow.Board.Commands do
 
   defmodule PickUpStory do
     @enforce_keys [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
     defstruct [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
   end
 

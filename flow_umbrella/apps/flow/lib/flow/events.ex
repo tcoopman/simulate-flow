@@ -15,39 +15,53 @@ defmodule Flow.Board.Events do
 
   defmodule StoryPickedUp do
     @enforce_keys [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
     defstruct [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
   end
 
   defmodule WorkedOnStory do
     @enforce_keys [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
     defstruct [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
   end
 
   defmodule ProcessStepForStoryFinished do
     @enforce_keys [
       :storyId,
-      :processStepId
+      :name,
+      :work
     ]
     defstruct [
       :storyId,
-      :processStepId
+      :name,
+      :work
     ]
   end
 
   defmodule StoryFinished do
     @enforce_keys [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
     defstruct [
-      :storyId
+      :storyId,
+      :name,
+      :work
     ]
   end
 end
