@@ -3,8 +3,6 @@ defmodule Flow.Gwt do
 
   alias __MODULE__
 
-  alias Flow.Router
-
   defstruct [:aggregate, :given, :command]
 
   def given(aggregate, events) when is_list(events) do
@@ -22,17 +20,30 @@ defmodule Flow.Gwt do
   end
 
   def then_(%Gwt{} = gwt, events) when is_list(events) do
+    gwt = apply_events(gwt)
+
+    module = gwt.aggregate.__struct__
+    event = module.execute(gwt.aggregate, gwt.command)
+
+    Enum.each(events, fn e ->
+      ^event = e
+    end)
+  end
+
+  def then_command_fails(%Gwt{} = gwt, failure) do
+    gwt = apply_events(gwt)
+
+    module = gwt.aggregate.__struct__
+    {:error, ^failure} = module.execute(gwt.aggregate, gwt.command)
+  end
+
+  defp apply_events(gwt) do
     aggregate =
       Enum.reduce(gwt.given, gwt.aggregate, fn event, acc ->
-        acc.apply(event)
+        module = acc.__struct__
+        module.apply(acc, event)
       end)
 
-    :ok = Router.dispatch(gwt.command)
-
-    Enum.each(events, fn event ->
-      assert_receive_event(event.__struct__, fn e ->
-        event = e
-      end)
-    end)
+    %{gwt | aggregate: aggregate}
   end
 end
