@@ -1,0 +1,25 @@
+Flow.Board.Commands:
+  - CreateStory:
+      storyId: string
+      name: string
+      work:
+  - PickUpStory:  
+      storyId: string
+  - WorkOnStory:
+      storyId: string
+  - FinishStory:
+      storyId: string
+Flow.Board.Events:
+  - StoryCreated:
+      storyId: string
+      name: string
+      work:
+  - StoryPickedUp:
+      storyId: string
+  - WorkedOnStory:
+      storyId: string
+  - ProcessStepForStoryFinished:
+      storyId: string
+      processStepId: string
+  - StoryFinished:
+      storyId: string
